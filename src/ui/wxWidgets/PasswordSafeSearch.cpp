@@ -153,7 +153,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
     m_searchPointer.InitIndex();
 
     // Set last find filter
-    UUIDVector res(m_searchPointer);
+    UUIDVector res = m_searchPointer;
     m_parentFrame->SetFilterFindEntries(&res);
   }
   else {

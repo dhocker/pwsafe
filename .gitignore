@@ -12,6 +12,7 @@ ipch
 *.wixpdb
 *.wixobj
 pwsafe*.msi
+pwsafe*.dmg
 *.props
 *.stackdump
 *.vc.opendb

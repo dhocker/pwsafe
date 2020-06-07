@@ -2136,6 +2136,7 @@
 					__WXOSX_COCOA__,
 					DEBUG,
 					_DEBUG,
+					__X__,
 					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -2162,6 +2163,7 @@
 					NDEBUG,
 					NO_YUBI,
 					"wxDEBUG_LEVEL=0",
+					__X__,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;

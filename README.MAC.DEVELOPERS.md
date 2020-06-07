@@ -12,7 +12,8 @@ It is organized in the following sections.
 * [Build pwsafe](#build-pwsafe)
   * Debug and Release Configs
   * Where is pwsafe.app?
-
+  * Newer versions of Xcode (e.g. 11.5)
+* [Create a .dmg File](#create-a-dmg-file)
 
 ## Requirements
 
@@ -39,7 +40,7 @@ the most time-consuming part of building pwsafe.
 
 
 ### Perl
-pwsafe uses perl for some small build tasks. OS X already ships with Perl, which should 
+pwsafe uses perl for some small build tasks. OS X already ships with Perl, which should
 suffice.
 
 
@@ -65,29 +66,29 @@ I recommend you download the tarball from wxWidgets download site
 https://www.wxwidgets.org/downloads/
 
 Click the link named "Source for Linux, OS X, etc".  It should get you a .tar.bz2
-or a .tar.gz file. DO NOT get the .7z version. That has sources with DOS CRLF 
+or a .tar.gz file. DO NOT get the .7z version. That has sources with DOS CRLF
 and won't build on OS X. Also, I have found some (may be irrelevant) inconsistencies
 between the sources checked out from their repository at a particular branch/tag, and
 the tarball. My recommendation is to use the tarball. That's what I always do on OS X.
 
 
 ### Which Version of wxWidgets?
-Use wxWidgets 3.0.2 or newer. pwsafe code is no longer compatible with older 
+Use wxWidgets 3.0.2 or newer. pwsafe code is no longer compatible with older
 versions of wxWidgets.
 
 
 ### Building wxWidgets for pwsafe
-pwsafe uses wxWidgets as the cross-platform toolkit for its UI. To build pwsafe, you 
+pwsafe uses wxWidgets as the cross-platform toolkit for its UI. To build pwsafe, you
 need to build wxWidgets first, in a way that is compatible with pwsafe's project settings.
-The Misc directory in pwsafe sources has a script called "osx-build-wx" which does exactly 
-that.  It basically runs the wxWidgets "configure" script in a way that the wxWidgets build 
-will happen with settings that are compatible with pwsafe's project settings, while retaining 
-the ability to run on older versions of OS X as far back as possible.  It is possible that 
+The Misc directory in pwsafe sources has a script called "osx-build-wx" which does exactly
+that.  It basically runs the wxWidgets "configure" script in a way that the wxWidgets build
+will happen with settings that are compatible with pwsafe's project settings, while retaining
+the ability to run on older versions of OS X as far back as possible.  It is possible that
 pwsafe built with such a build of wxWidgets will run on OS X 10.7, but it has not been verified.
 
 You can pass it the "-n" option to show what parameters it's passing to configure.
 
-osx-build-wx has to be run from your build directory.  Say, if you have wxWidgets sources 
+osx-build-wx has to be run from your build directory.  Say, if you have wxWidgets sources
 in "wx3", then do
 ```
 wx3 $ mkdir static-debug
@@ -98,7 +99,7 @@ wx3/static-debug $ make
 
 That would build the Debug configuration of wxWidgets in wx3/static-debug.  It would generate
 static libraries of wxWidgets with universal binaries for i386 and x86_64 in static-debug/lib.
-You can do the same thing again, but the directory name should be something like 
+You can do the same thing again, but the directory name should be something like
 "static-release", and omit the -d to osx-build-wx to build the Release configuration
 
 Note that osx-build-wx doesn't actually run make: you need to run it yourself.
@@ -161,4 +162,37 @@ At this point, just hitting Cmd-B or click Product Menu => Build to build pwsafe
 
 ### Where is pwsafe.app?
 In Xcode/build/Debug or Xcode/build/Release directories, depending
-on the configuration you built.
+on the configuration you built. **If you are using a recent version of Xcode (say 11.5) see the following section.**
+
+### Building with Newer Versions of Xcode (like 11.5)
+Newer versions of Xcode default their build output to a location that is
+very hard to find. You need to make some project setting changes to get
+the build output into Xcode/build.
+
+To do this, open File/Project Settings. Change the "Derived Data" setting to "Project-relative Location".
+Set the text box below "Derived Data" to "build".
+
+Now, click the Advanced button. Here, set the build location to "Custom" "Relative to Workspace".
+Set "Products" to "build/Products" and "Intermediates" to "build/Intermediates.noindex". Click "Done".
+
+These changes will get all of the build output into the Xcode/build
+directory. **Unfortunately, these settings are per user and are saved
+in the workspace. They are not saved as part of the project file.**
+
+### Create a dmg File
+If you only need pwsafe.app on one machine, you can simply copy Xcode/build/Products/Release/pwsafe.app
+to your Applications folder. However, if you want to distribute pwsafe.app, you might want to
+create a .dmg file.
+
+To begin the process of creating a .dmg file, change into the install/macosx folder.
+
+1. Make sure that the create-dmg script is executable.
+1. Edit the Makefile.
+1. Set the following variables.
+    * TARGETDIR (e.g. pwsafe or pwsafe64)
+    * RELDIR (e.g. ../../Xcode/build/Products/Release/)
+    * RELEASENAME (to the version in src/ui/wxWidgets/version.h)
+1. Run make.
+
+Several scripts will run, windows will open and close and a .dmg file will be
+produced in the root folder. It's name will be TARGETDIR-RELEASENAME.dmg.

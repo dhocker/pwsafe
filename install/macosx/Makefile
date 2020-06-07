@@ -3,25 +3,25 @@
 #
 #
 # Uncomment the correct TARGET and RELDIR below:
-#TARGET=pwsafe
+TARGET=pwsafe
 #TARGET=pwsafe-i386
-TARGET=pwsafe64
+#TARGET=pwsafe64
 #TARGET=pwsafe-llvm
-#RELDIR=../../Xcode/build/Release/
+RELDIR=../../Xcode/build/Products/Release/
 #RELDIR=../../Xcode/build-i386/Release/
-RELDIR=../../Xcode/build64/Release/
+#RELDIR=../../Xcode/build64/Release/
 #RELDIR=../../Xcode/build-llvm/Release/
 
 CPBIN=/bin/cp
 RMBIN=/bin/rm
 MDBIN=/bin/mkdir -p
 
-RELEASENAME := 0.9.0
+RELEASENAME := 1.10.0
 
 SRCDIR=./dmg/
 DMGNAME = ../../$(TARGET)-$(RELEASENAME).dmg
 PWSAFE-APP=$(TARGET).app
-DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotes.md 
+DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotes.md
 
 all: dist
 
@@ -32,7 +32,7 @@ dist:
 	$(CPBIN) -R $(RELDIR)$(PWSAFE-APP) $(SRCDIR)
 	./create-dmg \
 			--window-size 310 310 \
-			--background ./background.png \
+			--background ./background.svg \
 			--icon-size 40 \
 			--volname "Password Safe" \
 			--volicon ../../src/ui/wxWidgets/graphics/pwsafe.icns \
